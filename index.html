@@ -3,6 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Recipes for noobs or lazy people</title>
+	<link rel="stylesheet" href="styles.css">
 </head>
 <body>
 	<header>
@@ -11,23 +12,50 @@
 	</header>
 	<section>
 		<h2>You are what you eat?</h2> 
+		<form action="" class="firstOption" name="firstOption">
+			<input type="radio" name="firstOption" id="healthy">
+			<label for="healthy">Losing weight starts in the kitchen!</label>
+
+			<input type="radio" name="firstOption" id="unheathy">
+			<label for="unhealthy">ZFG FEED ME NAO</label>
+		</form>
 		<!-- Losing weight starts in the kitchen! -->
 		<!-- ZFG FEED ME NAO -->
 	</section>
 	<section>
 		<h2>Ok ok, is there an ingredient you want to include or exclude in your meal?</h2>
+		<form action="" class="secondOption" name="secondOption">
+			<input type="radio" name="secondOption" id="include">
+			<label for="include">Include</label>
+
+			<input type="radio" name="secondOption" id="exclude">
+			<label for="exclude">Exclude</label>
+
+			<input type="text" name="secondOption" placeholder="Please input your ingredient">
+		</form>
 		<!-- include -->
 		<!-- exclude -->
 		<!-- input -->
 	</section>
 	<section>
 		<h2>Excellent!! Last question... dare I ask how many people you're cooking for?</h2>
+		<!-- needs onChange event listener -->
+		<!-- add the class to the below label through javascript right from the getgo -->
+		 <input type="range" name="servings" id="servings" min="1" max="4">
+		 <!-- fallback incase the slider doesnt work -->
+		 <!-- <select name="servings" id="servings">
+			 	<option value="" selected hidden>-- Please select the number of servings --</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+				<option value="4">4</option> -->
+		 </select>
 		<!-- range input -->
 	</section>
 	<section>
 		<h2>Here's what I recommend</h2>
 		<div class="gallery leftOne">
-			<h3></h3>
+			<h3>Recipe Name</h3>
 			<img src="" alt="">
 			<p>Cooking Time</p>
 			<p>Description/Ingredients</p>
