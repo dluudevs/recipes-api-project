@@ -10,7 +10,24 @@ $()
 
 $(document).ready(function (){
 
-	const $initialResults = $.ajax({
+	// const $initialResults = $.ajax({
+	// 	url: 'http://api.yummly.com/v1/api/recipes?',
+	// 	method: 'GET',
+	// 	data: {
+	// 		format: 'json',
+	// 		_app_id: apiID,
+	// 		_app_key: apiKey,
+	// 		'allowedCourse[]': 'course^course-Main Dishes',
+	// 		maxTotalTimeInSeconds: 1800,	
+	// 		requirePictures: true,
+	// 		}
+	// 	}).then(function (data){
+	// 		$matches = data.matches;
+	// 		console.log($matches);
+	// 	});
+
+	async function getRecipes () {
+		const $recipes = await $.ajax({
 		url: 'http://api.yummly.com/v1/api/recipes?',
 		method: 'GET',
 		data: {
@@ -18,15 +35,31 @@ $(document).ready(function (){
 			_app_id: apiID,
 			_app_key: apiKey,
 			'allowedCourse[]': 'course^course-Main Dishes',
-			maxTotalTimeInSeconds: 1800,
+			maxTotalTimeInSeconds: 1800,	
 			requirePictures: true,
-		}
-	}).then(function (data){
-		$matches = data.matches;
-		console.log($matches[0].totalTimeInSeconds/60, 'minutes');
-		console.log($matches)
-		// console.log(data);
-	}); //end of ajax
+			}
+		})//wait until recipe ID is retrieved from the first endpoint
+		$matches = $recipes.matches;
+		console.log($matches);
+
+		const $recipesID = $.ajax ({
+			url: 'http://api.yummly.com/v1/api/recipe/recipe-id?',
+			method: 'GET',
+			data: {
+				format: 'json',
+				_app_id: apiID,
+				_app_key: apiKey
+			}
+		})
+		console.log($recipesID);
+	};
+
+	getRecipes();
+
+
+//create async function to fetch recipe ID, use recipe ID to fetch the URL
+//after the above is completed, then we apply it to the DOM
+//call the async function and pass it a callback function that applies what we need to the DOM
 
 });//end of document ready
 
