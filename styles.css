@@ -65,7 +65,7 @@ form button[value=submit]{
 
 
 form button[value=submit]:hover {
-	box-shadow: 5px 8px rgba(25, 25, 112, 0.8);
+	box-shadow: 5px 8px rgba(25, 25, 112, 0.7);
 	cursor: pointer;	
 }
 
