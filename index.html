@@ -17,27 +17,27 @@
 		<section id="health">
 			<h2>You are what you eat?</h2> 
 			<form action="" class="firstOption" name="firstOption">
-				<input type="radio" name="firstOption" id="healthy">
+				<input type="radio" name="health" value="healthy">
 				<label for="healthy">Losing weight starts in the kitchen!</label>
 
-				<input type="radio" name="firstOption" id="unhealthy">
+				<input type="radio" name="health" value="unhealthy">
 				<label for="unhealthy">Just feed me already</label>
 			</form>
 		</section>
 		<section id="ingredient">
 			<h2>Ok ok, is there an ingredient you want to include or exclude in your meal?</h2>
 			<form action="" class="secondOption" name="secondOption">
-				<input type="radio" name="secondOption" id="include">
+				<input type="radio" name="ingredient" value="include">
 				<label for="include">Include</label>
 
-				<input type="radio" name="secondOption" id="exclude">
+				<input type="radio" name="ingredient" value="exclude">
 				<label for="exclude">Exclude</label>
 
-				<input type="radio" name="secondOption" id="noPreference">
+				<input type="radio" name="ingredient" value="noPreference">
 				<label for="noPreference">Don't care</label>
 				<!-- onClick hide input. -->
 
-				<input type="text" name="secondOption" placeholder="Please input your ingredient">
+				<input type="text" name="ingredient" placeholder="Please input your ingredient">
 			</form>
 		</section>
 		<section id="servings">
@@ -46,12 +46,12 @@
 			<!-- add the class to the below label through javascript right from the getgo -->
 			<form action="">
 			 <!-- <input type="range" name="servings" id="servings" min="1" max="4"> -->
-				 <select name="servings" id="servings">
-					 	<option value="" selected hidden class="option">-- Please select your option --</option>
-						<option value="1" class="option">1</option>
-						<option value="2" class="option">2</option>
-						<option value="3" class="option">3</option>
-						<option value="4" class="option">4</option>
+				 <select name="servings">
+					 	<option value="" name="servings" selected hidden class="option">-- Please select your option --</option>
+						<option value="1" name="servings">1</option>
+						<option value="2" name="servings">2</option>
+						<option value="3" name="servings">3</option>
+						<option value="4" name="servings">4</option>
 				 </select>
 			</form>
 			<!-- range input -->
