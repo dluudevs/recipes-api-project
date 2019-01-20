@@ -27,17 +27,17 @@
 		<section id="ingredient">
 			<h2>Ok ok, is there an ingredient you want to include or exclude in your meal?</h2>
 			<form action="" class="secondOption" name="secondOption">
-				<input type="radio" name="ingredient" value="include">
+				<input type="radio" name="ingredient" value="include" id="include">
 				<label for="include">Include</label>
 
-				<input type="radio" name="ingredient" value="exclude">
+				<input type="radio" name="ingredient" value="exclude" id="exclude">
 				<label for="exclude">Exclude</label>
 
-				<input type="radio" name="ingredient" value="noPreference">
+				<input type="radio" name="ingredient" value="noPreference" id="none">
 				<label for="noPreference">Don't care</label>
 				<!-- onClick hide input. -->
 
-				<input type="text" name="ingredient" placeholder="Please input your ingredient">
+				<input type="text" name="ingredient" id="ingredientInput" placeholder="Please input your ingredient">
 			</form>
 		</section>
 		<section id="servings">
@@ -53,6 +53,7 @@
 						<option value="3" name="servings">3</option>
 						<option value="4" name="servings">4</option>
 				 </select>
+			<!-- if this doesnt workout, take it out and have people choose between breakfast, main and dessert -->
 			</form>
 			<!-- range input -->
 		</section>

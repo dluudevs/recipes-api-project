@@ -1,10 +1,8 @@
 const apiID = "c98291d0";
 const apiKey = "6bb8f3a6880182e070150cf8780b037e";
-var $matches; //this holds the array of matches after ajax method runs
-
-const queryStrings = {
-
-}
+let $matches; //this holds the array of matches after ajax method runs
+let $recipeID;
+let $servings;
 
 const formCheck = function (){
 	if ( $('input[name="health"]:checked').val() && 
@@ -19,48 +17,46 @@ const formCheck = function (){
 	console.log('Ingredients:', $('input[name="ingredient"]:checked').val());
 	console.log('Servings:', $('option[name="servings"]:selected').val());
 }
+
+const healthValues = [100, 400, 800, 30, 800];
+//if unhealthy, change all the values in the array to undefined
+const healthInput = function (){
+	if ($('#health input[name="health"]:checked').val() === 'unhealthy'){
+		for(i = 0; i < healthValues.length; i++){
+			healthValues[i] = undefined;
+		}
+	}
+	console.log(healthValues);
+}
+
+//  ***** INGREDIENT FUNCTION FOR USER INPUT *****
+let allowedIngredient = undefined;
+let excludedIngredient = undefined;
+
+const ingredientInput = function (){
+	if ($('#include:checked').val() == 'include'){
+		allowedIngredient= $('#ingredient input[type=text]').val();
+		console.log($('#ingredientInput').val());
+	} else if ($('#exclude:checked').val() == 'exclude'){
+		excludedIngredient = $('#ingredient input[type=text]').val();
+		console.log($('#ingredientInput').val());
+	}  else if ($('#none:checked')) {
+		console.log($('#none:checked').val());
+		// $('#ingredientInput').addClass('hideInput');
+	}
+}
+
+	// $('#ingredient input[type="radio"]').on('click', function(){
+	// 	console.log('I heard your click!!!!');
+	// })
+
+// ***** AJAX REQUEST *****
+const $refineSearch = (allowedIngredient, excludedIngredient, healthValues) => {
+	//pass through variables to the function, assign variable values from a function for each user input
 	
-
-//what are all the possible outcomes 
-// key1, value1, key2, value2, key3, value3, key4, value4,
-// 								key5, value5, key6, value6, key7, value7, key8, value8
-
-// const $refineSearch = function (key1, value1, key2, value2, key3, value3, key4, value4,
-// 								key5, value5, key6, value6, key7, value7, key8, value8){
-// 	$.ajax({
-// 	url: 'http://api.yummly.com/v1/api/recipes?',
-// 	method: 'GET',
-// 	data: {
-// 		format: 'json',
-// 		_app_id: apiID,
-// 		_app_key: apiKey,
-// 		'allowedCourse[]': 'course^course-Main Dishes',
-// 		maxTotalTimeInSeconds: 1800,	
-// 		requirePictures: true,
-// 		// q: 'pizza'
-// 		// key1: value1,
-// 		// key2: value2,
-// 		// key3: value3,
-// 		// key4: value4,
-// 		// key5: value5,
-// 		// key6: value6,
-// 		// key6: value6,
-// 		// key8: value8
-// 		}
-// 	}).then(function (data){
-// 		$matches = data.matches;
-// 		const $recipeID = $matches[2].id;
-// 		console.log('Matches array', $matches); //returns an array
-// 		console.log('Data Objects', data);
-// 		console.log(`Link to the recipe: https://www.yummly.com/recipe/${$recipeID}`);
-// 	});
-// }
-
-// how do people normally do this if they dont want to use if statements, specifically if your parameter contains nonconventional characters
-
-
-
-const $results = $.ajax({
+	return $.ajax({
+		//returns what the end point provides us (allows us to work with it)
+		//if you dont return it - you can't do anything with the returned value
 	url: 'http://api.yummly.com/v1/api/recipes?',
 	method: 'GET',
 	data: {
@@ -70,27 +66,60 @@ const $results = $.ajax({
 		'allowedCourse[]': 'course^course-Main Dishes',
 		maxTotalTimeInSeconds: 1800,	
 		requirePictures: true,
-		'excludedIngredient[]': 'pork'
-		// q: '1 serving'
+		maxResult: 100,
+		'nutrition.CHOCDF.max': healthValues[0], //100
+		'nutrition.ENERC_KCAL.min': healthValues[1], //400
+		'nutrition.ENERC_KCAL.max': healthValues[2], //800
+		'nutrition.FAT.max': healthValues[3], //30
+		'nutrition.NA.max': healthValues[4], //800
+		'allowedIngredient[]': allowedIngredient,
+		'excludedIngredient[]': excludedIngredient
 		}
-	}).then(function (data){
+	})
+}
+		// console.log('Matches array', $matches); //returns an array
+		// console.log('Data Objects', data);
+		// console.log(`Link to the recipe: https://www.yummly.com/recipe/${$recipeID}`);
+
+function $getServings (){
+	$refineSearch(allowedIngredient, excludedIngredient, healthValues).then(function (data){
+		//once the first get api call is completed, use data from that return and make a second call
 		$matches = data.matches;
-		const $recipeID = $matches[2].id;
-		console.log('Matches array', $matches); //returns an array
-		console.log('Data Objects', data);
-		console.log(`Link to the recipe: https://www.yummly.com/recipe/${$recipeID}`);
-	});
+		$recipeID = $matches[0].id;	
+		$.ajax({
+			url: `http://api.yummly.com/v1/api/recipe/${$recipeID}`,
+			method: 'GET',
+			format: 'json',
+			data :{
+				_app_id: apiID, 
+				_app_key: apiKey
+			}
+		}).then(function (data){
+			$servings = data.numberOfServings;
+			console.log($servings);
+		})
+	})
+};
+
+//possible outcomes 
+	//healthy > include > no preference > 1 serving
+	//healthy > exclude
 
 $(document).ready(function (){
 	$('#ready form').on('submit', function (e){
 		e.preventDefault();
-		$results;
+		ingredientInput();
+		healthInput();
 		// formCheck();
+		// $refineSearch(allowedIngredient, excludedIngredient, healthValues);
+		$getServings();
 	})
 });
 
 //basic requirments for each search
 	//max results 6 - is there a point in having this?
+	//have a high number of max results (50) - to ensure that when we're looking into the second api request we find the what we want
+	//then limit the display to 6 items
 
 
 //display results 
@@ -110,7 +139,7 @@ $(document).ready(function (){
 			// 		 }
 	//include and exclude
 		//'excludedIngredient[]': 
-		//'includedIngredient[]':
+		//'allowedIngredient[]':
 	//servings
 
 
