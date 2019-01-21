@@ -1,13 +1,20 @@
+//QUESTIONS:
+	//I couldn't figure out how to extract the ingredients (they're values in an array that is embedded in an array of objects)
+	//I tried using forEach to extract the values, but i can't seem to log the array that i created
+	//I wanted to pass in a string of ingredients, showRecipes() - line 113
+
+
 const apiID = "c98291d0";
 const apiKey = "6bb8f3a6880182e070150cf8780b037e";
-let $matches; //this holds the array of matches after ajax method runs
+let matches; //this holds the array of matches after ajax method runs
 let $recipeID;
-let $servings;
+let course;
 
+// ***** CHECKS IF FORM IS FILLED OUT *****
 const formCheck = function (){
 	if ( $('input[name="health"]:checked').val() && 
 		$('input[name="ingredient"]:checked').val() &&
-		$('option[name="servings"]:selected').val()) {
+		$('option[name="course"]:selected').val()) {
 		console.log('submitting form..');
 		//print loading recipes in results section
 	} else {
@@ -15,9 +22,12 @@ const formCheck = function (){
 	}
 	console.log('Health:', $('input[name="health"]:checked').val());
 	console.log('Ingredients:', $('input[name="ingredient"]:checked').val());
-	console.log('Servings:', $('option[name="servings"]:selected').val());
+	course = $('option[name="course"]:selected').val();
+	console.log('Course:', course);
 }
 
+
+// ***** HEALTHY FUNCTION FOR USER INPUT 
 const healthValues = [100, 400, 800, 30, 800];
 //if unhealthy, change all the values in the array to undefined
 const healthInput = function (){
@@ -51,19 +61,21 @@ const ingredientInput = function (){
 	// })
 
 // ***** AJAX REQUEST *****
-const $refineSearch = (allowedIngredient, excludedIngredient, healthValues) => {
+
+const $refineSearch = (course, allowedIngredient, excludedIngredient, healthValues) => {
 	//pass through variables to the function, assign variable values from a function for each user input
 	
 	return $.ajax({
 		//returns what the end point provides us (allows us to work with it)
-		//if you dont return it - you can't do anything with the returned value
+		//if you dont return it - you can't do anything with the returned value (like storing the output in the function)
+		//tho its not necessary here as we're storing the object in a variable
 	url: 'http://api.yummly.com/v1/api/recipes?',
 	method: 'GET',
 	data: {
 		format: 'json',
 		_app_id: apiID,
 		_app_key: apiKey,
-		'allowedCourse[]': 'course^course-Main Dishes',
+		'allowedCourse[]': `course^course-${course}`,
 		maxTotalTimeInSeconds: 1800,	
 		requirePictures: true,
 		maxResult: 100,
@@ -75,35 +87,43 @@ const $refineSearch = (allowedIngredient, excludedIngredient, healthValues) => {
 		'allowedIngredient[]': allowedIngredient,
 		'excludedIngredient[]': excludedIngredient
 		}
+	}).then(function (data){
+		// console.log('Matches array', matches); //returns an array
+		// console.log('Data Objects', data);
+		$recipeID = data.matches[0].id;	
+		console.log(`Link to the recipe: https://www.yummly.com/recipe/${$recipeID}`);
+		ingredientsArray(data.matches);
+		// showRecipes(data.matches);
 	})
 }
-		// console.log('Matches array', $matches); //returns an array
-		// console.log('Data Objects', data);
-		// console.log(`Link to the recipe: https://www.yummly.com/recipe/${$recipeID}`);
 
-function $getServings (){
-	$refineSearch(allowedIngredient, excludedIngredient, healthValues).then(function (data){
-		//once the first get api call is completed, use data from that return and make a second call
-		$matches = data.matches;
-		$recipeID = $matches[0].id;	
-		$.ajax({
-			url: `http://api.yummly.com/v1/api/recipe/${$recipeID}`,
-			method: 'GET',
-			format: 'json',
-			data :{
-				_app_id: apiID, 
-				_app_key: apiKey
-			}
-		}).then(function (data){
-			$servings = data.numberOfServings;
-			console.log($servings);
-		})
+//create a function that maps out the results
+
+const ingredientsArray = function (matches){
+	// debugger
+	let ingredients = matches.forEach(function (index){
+		return index.ingredients;
 	})
-};
+	console.log(ingredients);
+	// matches.ingredients.map(function (array){
+	// 	const ingredients = array.join(', ');
+	// 	console.log(ingredients)
+}
 
-//possible outcomes 
-	//healthy > include > no preference > 1 serving
-	//healthy > exclude
+const showRecipes = function (matches){
+	console.log('this is the new function', matches);
+	matches.forEach(function (){
+		const recipes = `
+			<div class="gallery">
+				<h3${matches.recipeName}</h3>
+				<img src=${matches.smallImageUrls} alt="picture of recipe">
+				<p>Cooking Time: ${matches.totalTimeInSeconds}</p>
+				<p></p> 
+				<p>content for above</p>
+			</div>	
+			`
+	})//ingredients are supposed to go in line 119, but they're in an array
+}
 
 $(document).ready(function (){
 	$('#ready form').on('submit', function (e){
@@ -111,8 +131,7 @@ $(document).ready(function (){
 		ingredientInput();
 		healthInput();
 		// formCheck();
-		// $refineSearch(allowedIngredient, excludedIngredient, healthValues);
-		$getServings();
+		$refineSearch(course, allowedIngredient, excludedIngredient, healthValues);
 	})
 });
 

@@ -10,13 +10,25 @@
 <body>
 	<div class="backgroundOverlay">
 		<header>
-			<h1>So I heard you're looking to make an easy meal</h1>
+			<h1>So I heard you're looking for recipes</h1>
 			<h2>Let's get started...</h2>
 			<i class="fas fa-angle-double-down"></i>
 		</header>
+		<section id="course">
+			<h2>What kind of recipe are you looking for?</h2>
+			<form action="" name="courseOption">
+				<select name="course' id="">
+					<option name="course" value="" selected hidden class="course">-- Please select your option --</option>
+					<option name="course" value="Breakfast and Brunch" class="course">Breakfast</option>
+					<option name="course" value="Appetizers" class="course">Appetizers</option>
+					<option name="course" value="Main Dishes" class="course">Mains</option>
+					<option name="course" value="Desserts" class="course">Desserts</option>
+				</select>
+			</form>
+		</section>
 		<section id="health">
 			<h2>You are what you eat?</h2> 
-			<form action="" class="firstOption" name="firstOption">
+			<form action="" name="healthOption">
 				<input type="radio" name="health" value="healthy">
 				<label for="healthy">Losing weight starts in the kitchen!</label>
 
@@ -26,7 +38,7 @@
 		</section>
 		<section id="ingredient">
 			<h2>Ok ok, is there an ingredient you want to include or exclude in your meal?</h2>
-			<form action="" class="secondOption" name="secondOption">
+			<form action=""  name="ingredientOption">
 				<input type="radio" name="ingredient" value="include" id="include">
 				<label for="include">Include</label>
 
@@ -40,23 +52,6 @@
 				<input type="text" name="ingredient" id="ingredientInput" placeholder="Please input your ingredient">
 			</form>
 		</section>
-		<section id="servings">
-			<h2>Excellent!! Last question... dare I ask how many people are you cooking for?</h2>
-			<!-- needs onChange event listener -->
-			<!-- add the class to the below label through javascript right from the getgo -->
-			<form action="">
-			 <!-- <input type="range" name="servings" id="servings" min="1" max="4"> -->
-				 <select name="servings">
-					 	<option value="" name="servings" selected hidden class="option">-- Please select your option --</option>
-						<option value="1" name="servings">1</option>
-						<option value="2" name="servings">2</option>
-						<option value="3" name="servings">3</option>
-						<option value="4" name="servings">4</option>
-				 </select>
-			<!-- if this doesnt workout, take it out and have people choose between breakfast, main and dessert -->
-			</form>
-			<!-- range input -->
-		</section>
 		<section id="ready">
 			<h2>How ready are you for this???</h2>
 			<form action="">
@@ -66,42 +61,42 @@
 		<section id="results">
 			<h2>Here's what I recommend:</h2>
 			<div class="galleryWrapper">
-				<div class="gallery leftOne">
+				<div class="gallery">
 					<h3>Recipe Name</h3>
 					<img src="" alt="">
 					<p>Cooking Time</p>
 					<p>Ingredients</p>
 					<p>content for above</p>
 				</div>
-				<div class="gallery midOne">
+				<div class="gallery">
 					<h3>Recipe Name</h3>
 					<img src="" alt="">
 					<p>Cooking Time</p>
 					<p>Ingredients</p>
 					<p>content for above</p>
 				</div>
-				<div class="gallery rightOne">
+				<div class="gallery">
 					<h3>Recipe Name</h3>
 					<img src="" alt="">
 					<p>Cooking Time</p>
 					<p>Ingredients</p>
 					<p>content for above</p>
 				</div>
-				<div class="gallery leftTwo">
+				<div class="gallery">
 					<h3>Recipe Name</h3>
 					<img src="" alt="">
 					<p>Cooking Time</p>
 					<p>Ingredients</p>
 					<p>content for above</p>
 				</div>
-				<div class="gallery midTwo">
+				<div class="gallery">
 					<h3>Recipe Name</h3>
 					<img src="" alt="">
 					<p>Cooking Time</p>
 					<p>Ingredients</p>
 					<p>content for above</p>
 				</div>
-				<div class="gallery rightTWo">
+				<div class="gallery">
 					<h3>Recipe Name</h3>
 					<img src="" alt="">
 					<p>Cooking Time</p>
